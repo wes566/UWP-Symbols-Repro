@@ -1,3 +1,7 @@
+param(
+    [switch]$Preview
+)
+
 function Get-ProgramFilesx86()
 {
     $pf86 = ${env:ProgramFiles(x86)};
@@ -42,33 +46,38 @@ function Get-MSBuild15()
 function Get-MSBuild15Preview()
 {
     $pf86 = Get-ProgramFilesx86;
-    $msbuild = [IO.Path]::Combine($pf86, "Microsoft Visual Studio", "2017",
+    $msbuild = [IO.Path]::Combine($pf86, "Microsoft Visual Studio", "Preview",
         "Enterprise", "MSBuild", "15.0", "Bin", "msbuild.exe");
 
     if (Test-Path $msbuild)
     {
-        return $msbuid;
+        return $msbuild;
     }
 
-    $msbuild = [IO.Path]::Combine($pf86, "Microsoft Visual Studio", "2017",
+    $msbuild = [IO.Path]::Combine($pf86, "Microsoft Visual Studio", "Preview",
         "Professional", "MSBuild", "15.0", "Bin", "msbuild.exe");
 
     if (Test-Path $msbuild)
     {
-        return $msbuid;
+        return $msbuild;
     }
 
-    $msbuild = [IO.Path]::Combine($pf86, "Microsoft Visual Studio", "2017",
+    $msbuild = [IO.Path]::Combine($pf86, "Microsoft Visual Studio", "Preview",
         "Community", "MSBuild", "15.0", "Bin", "msbuild.exe");
 
     if (Test-Path $msbuild)
     {
-        return $msbuid;
+        return $msbuild;
     }
 
     throw "Visual Studio 2017 Enterprise or Professional or Community not installed";
 }
 
 $msBuild = Get-MSBuild15;
+
+if ($Preview)
+{
+    $msBuild = Get-MSBuild15Preview
+}
 
 & $msBuild /t:clean,build UwpApp1.sln
