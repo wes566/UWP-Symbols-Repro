@@ -80,4 +80,6 @@ if ($Preview)
     $msBuild = Get-MSBuild15Preview
 }
 
-& $msBuild /t:clean,build UwpApp1.sln
+& $msBuild /t:clean,build UwpApp1.sln /p:Configuration="Debug" /p:Platform="x86"
+
+"Built using $msBuild"
